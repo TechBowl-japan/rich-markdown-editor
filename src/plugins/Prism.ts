@@ -2,8 +2,9 @@ import refractor from "refractor/core";
 import flattenDeep from "lodash/flattenDeep";
 import { Plugin, PluginKey, Transaction } from "prosemirror-state";
 import { Node } from "prosemirror-model";
-import { Decoration, DecorationSet } from "prosemirror-view";
+import { Decoration, DecorationSet, EditorView } from "prosemirror-view";
 import { findBlockNodes } from "prosemirror-utils";
+import { loadSyntaxHighlight } from "../lib/refractor";
 
 export const LANGUAGES = {
   none: "None", // additional entry to disable highlighting
@@ -36,6 +37,8 @@ type ParsedNode = {
 const cache: Record<number, { node: Node; decorations: Decoration[] }> = {};
 
 function getDecorations({ doc, name }: { doc: Node; name: string }) {
+  let isImcompleteRender = false;
+
   const decorations: Decoration[] = [];
   const blocks: { node: Node; pos: number }[] = findBlockNodes(doc).filter(
     item => item.node.type.name === name
@@ -58,10 +61,19 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
     });
   }
 
+  const promises = [] as Promise<unknown>[];
+
   blocks.forEach(block => {
     let startPos = block.pos + 1;
     const language = block.node.attrs.language;
-    if (!language || language === "none" || !refractor.registered(language)) {
+    const isRegistered = refractor.registered(language);
+
+    isImcompleteRender = isImcompleteRender || !isRegistered;
+    if (!language || language === "none" || !isRegistered) {
+      const p = loadSyntaxHighlight(language);
+      if (p) {
+        promises.push(p);
+      }
       return;
     }
 
@@ -103,11 +115,18 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
       delete cache[Number(pos)];
     });
 
-  return DecorationSet.create(doc, decorations);
+  return [
+    DecorationSet.create(doc, decorations),
+    isImcompleteRender,
+    promises,
+  ] as const;
 }
 
 export default function Prism({ name }) {
   let highlighted = false;
+  let isImcompleteRender = false;
+  let promise = Promise.resolve(undefined as unknown);
+  let theView = null as EditorView | null;
 
   return new Plugin({
     key: new PluginKey("prism"),
@@ -122,16 +141,38 @@ export default function Prism({ name }) {
           transaction.docChanged && [nodeName, previousNodeName].includes(name);
         const ySyncEdit = !!transaction.getMeta("y-sync$");
 
-        if (!highlighted || codeBlockChanged || ySyncEdit) {
+        if (
+          !highlighted ||
+          isImcompleteRender ||
+          codeBlockChanged ||
+          ySyncEdit
+        ) {
           highlighted = true;
-          return getDecorations({ doc: transaction.doc, name });
+          const [res, flag, promises] = getDecorations({
+            doc: transaction.doc,
+            name,
+          });
+          isImcompleteRender = flag;
+
+          if (isImcompleteRender) {
+            promise = Promise.all([promise, ...promises]);
+            promise.then(() => {
+              theView?.dispatch(
+                theView.state.tr.setMeta("prism", { loaded: true })
+              );
+            });
+          }
+
+          return res;
         }
 
         return decorationSet.map(transaction.mapping, transaction.doc);
       },
     },
     view: view => {
-      if (!highlighted) {
+      theView = view;
+
+      if (!highlighted || isImcompleteRender) {
         // we don't highlight code blocks on the first render as part of mounting
         // as it's expensive (relative to the rest of the document). Instead let
         // it render un-highlighted and then trigger a defered render of Prism
