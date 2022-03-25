@@ -1,6 +1,6 @@
 import * as React from "react";
 import capitalize from "lodash/capitalize";
-import { Portal } from "react-portal";
+import { Portal } from "./Portal";
 import { EditorView } from "prosemirror-view";
 import { findDomRefAtPos, findParentNode } from "prosemirror-utils";
 import styled from "styled-components";

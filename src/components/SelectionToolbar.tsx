@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Portal } from "react-portal";
+import { Portal } from "./Portal";
 import some from "lodash/some";
 import { EditorView } from "prosemirror-view";
 import { TextSelection } from "prosemirror-state";
