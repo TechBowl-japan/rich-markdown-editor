@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Portal } from "react-portal";
+import { Portal } from "./Portal";
 import { EditorView } from "prosemirror-view";
 import useComponentSize from "../hooks/useComponentSize";
 import useMediaQuery from "../hooks/useMediaQuery";

@@ -80,6 +80,8 @@ import { PluginSimple } from "markdown-it";
 
 export { schema, parser, serializer, renderToHtml } from "./server";
 
+export { PortalProvider } from "./components/PortalProvider";
+
 export { default as Extension } from "./lib/Extension";
 
 export const theme = lightTheme;
@@ -180,7 +182,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     onImageUploadStop: () => {
       // no default behavior
     },
-    onClickLink: href => {
+    onClickLink: (href) => {
       window.open(href, "_blank");
     },
     embeds: [],
@@ -402,7 +404,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
           new MaxLength({
             maxLength: this.props.maxLength,
           }),
-        ].filter(extension => {
+        ].filter((extension) => {
           // Optionaly disable extensions
           if (this.props.disableExtensions) {
             return !(this.props.disableExtensions as string[]).includes(
@@ -528,7 +530,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       throw new Error("createView called before ref available");
     }
 
-    const isEditingCheckbox = tr => {
+    const isEditingCheckbox = (tr) => {
       return tr.steps.some(
         (step: Step) =>
           step.slice?.content?.firstChild?.type.name ===
@@ -554,7 +556,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         // changing then call our own change handler to let the outside world
         // know
         if (
-          transactions.some(tr => tr.docChanged) &&
+          transactions.some((tr) => tr.docChanged) &&
           (!self.props.readOnly ||
             (self.props.readOnlyWriteCheckboxes &&
               transactions.some(isEditingCheckbox)))
@@ -692,7 +694,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     const headings: { title: string; level: number; id: string }[] = [];
     const previouslySeen = {};
 
-    this.view.state.doc.forEach(node => {
+    this.view.state.doc.forEach((node) => {
       if (node.type.name === "heading") {
         // calculate the optimal slug
         const slug = headingToSlug(node);
@@ -759,7 +761,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
               rtl={isRTL}
               readOnly={readOnly}
               readOnlyWriteCheckboxes={readOnlyWriteCheckboxes}
-              ref={ref => (this.element = ref)}
+              ref={(ref) => (this.element = ref)}
             />
             {!readOnly && this.view && (
               <React.Fragment>
