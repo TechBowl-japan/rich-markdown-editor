@@ -21,6 +21,7 @@ export const Portal = ({ children, node }: PortalProps): JSX.Element => {
     return () => {
       if (refDefaultNode.current) {
         refDefaultNode.current.remove();
+        refDefaultNode.current = null;
       }
     };
   }, []);
@@ -32,6 +33,11 @@ export const Portal = ({ children, node }: PortalProps): JSX.Element => {
   if (!node && !refDefaultNode.current) {
     refDefaultNode.current = document.createElement("div");
     document.body.appendChild(refDefaultNode.current);
+  }
+
+  if ((node || ctxNode) && refDefaultNode.current) {
+    refDefaultNode.current.remove();
+    refDefaultNode.current = null;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
