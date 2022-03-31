@@ -2,6 +2,7 @@ import { Schema } from "prosemirror-model";
 import { keymap } from "prosemirror-keymap";
 import { MarkdownParser } from "prosemirror-markdown";
 import { MarkdownSerializer } from "./markdown/serializer";
+import type { MarkdownSerializer as _TMarkdownSerializer } from "prosemirror-markdown";
 import Editor from "../";
 import Extension from "./Extension";
 import makeRules from "./markdown/rules";
@@ -55,7 +56,11 @@ export default class ExtensionManager {
         {}
       );
 
-    return new MarkdownSerializer(nodes, marks);
+    // FIXME: make up-to-date with prosemirror-markdown
+    return new MarkdownSerializer(
+      nodes,
+      marks
+    ) as unknown as _TMarkdownSerializer;
   }
 
   parser({
@@ -81,7 +86,13 @@ export default class ExtensionManager {
         };
       }, {});
 
-    return new MarkdownParser(schema, makeRules({ rules, plugins }), tokens);
+    return new MarkdownParser(
+      schema,
+      // FIXME: markdown-it types are not compatible with prosemirror-markdown
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      makeRules({ rules, plugins }) as any,
+      tokens
+    );
   }
 
   get marks() {
