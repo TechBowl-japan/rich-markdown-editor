@@ -1,5 +1,5 @@
 import React from "react";
-import gemojies from "gemoji";
+import { gemoji as gemojies } from "gemoji";
 import FuzzySearch from "fuzzy-search";
 import CommandMenu, { Props } from "./CommandMenu";
 import EmojiMenuItem from "./EmojiMenuItem";
@@ -35,7 +35,7 @@ class EmojiMenu extends React.Component<
     const { search = "" } = this.props;
 
     const n = search.toLowerCase();
-    const result = searcher.search(n).map(item => {
+    const result = searcher.search(n).map((item) => {
       const description = item.description;
       const name = item.names[0];
       return {

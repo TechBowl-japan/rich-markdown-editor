@@ -29,7 +29,7 @@ export default class CheckboxItem extends Node {
           }),
         },
       ],
-      toDOM: node => {
+      toDOM: (node) => {
         const input = document.createElement("input");
         input.type = "checkbox";
         input.tabIndex = -1;
@@ -62,7 +62,7 @@ export default class CheckboxItem extends Node {
     return [checkboxRule];
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     const { view } = this.editor;
     const { tr } = view.state;
     const { top, left } = event.target.getBoundingClientRect();
@@ -94,7 +94,7 @@ export default class CheckboxItem extends Node {
   parseMarkdown() {
     return {
       block: "checkbox_item",
-      getAttrs: tok => ({
+      getAttrs: (tok) => ({
         checked: tok.attrGet("checked") ? true : undefined,
       }),
     };

@@ -5,7 +5,7 @@ const BREAK_REGEX = /(?:^|[^\\])\\n/;
 
 export default function markdownTables(md: MarkdownIt): void {
   // insert a new rule after the "inline" rules are parsed
-  md.core.ruler.after("inline", "tables-pm", state => {
+  md.core.ruler.after("inline", "tables-pm", (state) => {
     const tokens = state.tokens;
     let inside = false;
 
@@ -19,7 +19,7 @@ export default function markdownTables(md: MarkdownIt): void {
         const existing = tokens[i].children || [];
         tokens[i].children = [];
 
-        existing.forEach(child => {
+        existing.forEach((child) => {
           const breakParts = child.content.split(BREAK_REGEX);
 
           // a schema agnostic way to know if a node is inline code would be

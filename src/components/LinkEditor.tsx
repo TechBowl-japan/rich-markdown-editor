@@ -208,7 +208,7 @@ class LinkEditor extends React.Component<Props, State> {
     if (trimmedValue && this.props.onSearchLink) {
       try {
         const results = await this.props.onSearchLink(trimmedValue);
-        this.setState(state => ({
+        this.setState((state) => ({
           results: {
             ...state.results,
             [trimmedValue]: results,
@@ -257,7 +257,7 @@ class LinkEditor extends React.Component<Props, State> {
     view.focus();
   };
 
-  handleSelectLink = (url: string, title: string) => event => {
+  handleSelectLink = (url: string, title: string) => (event) => {
     event.preventDefault();
     this.save(url, title);
 
@@ -371,7 +371,7 @@ const Wrapper = styled(Flex)`
 `;
 
 const SearchResults = styled.ol`
-  background: ${props => props.theme.toolbarBackground};
+  background: ${(props) => props.theme.toolbarBackground};
   position: absolute;
   top: 100%;
   width: 100%;

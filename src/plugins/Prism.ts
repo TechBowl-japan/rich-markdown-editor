@@ -41,14 +41,14 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
 
   const decorations: Decoration[] = [];
   const blocks: { node: Node; pos: number }[] = findBlockNodes(doc).filter(
-    item => item.node.type.name === name
+    (item) => item.node.type.name === name
   );
 
   function parseNodes(
     nodes: refractor.RefractorNode[],
     classNames: string[] = []
   ): any {
-    return nodes.map(node => {
+    return nodes.map((node) => {
       if (node.type === "element") {
         const classes = [...classNames, ...(node.properties.className || [])];
         return parseNodes(node.children, classes);
@@ -63,7 +63,7 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
 
   const promises = [] as Promise<unknown>[];
 
-  blocks.forEach(block => {
+  blocks.forEach((block) => {
     let startPos = block.pos + 1;
     const language = block.node.attrs.language;
     const isRegistered = refractor.registered(language);
@@ -92,8 +92,8 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
             to,
           };
         })
-        .filter(node => node.classes && node.classes.length)
-        .map(node =>
+        .filter((node) => node.classes && node.classes.length)
+        .map((node) =>
           Decoration.inline(node.from, node.to, {
             class: node.classes.join(" "),
           })
@@ -104,14 +104,14 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
         decorations: _decorations,
       };
     }
-    cache[block.pos].decorations.forEach(decoration => {
+    cache[block.pos].decorations.forEach((decoration) => {
       decorations.push(decoration);
     });
   });
 
   Object.keys(cache)
-    .filter(pos => !blocks.find(block => block.pos === Number(pos)))
-    .forEach(pos => {
+    .filter((pos) => !blocks.find((block) => block.pos === Number(pos)))
+    .forEach((pos) => {
       delete cache[Number(pos)];
     });
 
@@ -169,7 +169,7 @@ export default function Prism({ name }) {
         return decorationSet.map(transaction.mapping, transaction.doc);
       },
     },
-    view: view => {
+    view: (view) => {
       theView = view;
 
       if (!highlighted || isImcompleteRender) {

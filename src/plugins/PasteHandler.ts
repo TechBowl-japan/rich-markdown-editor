@@ -18,7 +18,7 @@ function normalizePastedMarkdown(text: string): string {
   const CHECKBOX_REGEX = /^\s?(\[(X|\s|_|-)\]\s(.*)?)/gim;
 
   while (text.match(CHECKBOX_REGEX)) {
-    text = text.replace(CHECKBOX_REGEX, match => `- ${match.trim()}`);
+    text = text.replace(CHECKBOX_REGEX, (match) => `- ${match.trim()}`);
   }
 
   return text;

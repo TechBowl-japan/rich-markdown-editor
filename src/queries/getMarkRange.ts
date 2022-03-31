@@ -10,7 +10,7 @@ export default function getMarkRange($pos?: ResolvedPos, type?: MarkType) {
     return false;
   }
 
-  const mark = start.node.marks.find(mark => mark.type === type);
+  const mark = start.node.marks.find((mark) => mark.type === type);
   if (!mark) {
     return false;
   }

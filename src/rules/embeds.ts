@@ -17,7 +17,7 @@ function isLinkClose(token: Token) {
   return token.type === "link_close";
 }
 
-export default function(embeds) {
+export default function (embeds) {
   function isEmbed(token: Token, link: Token) {
     const href = link.attrs ? link.attrs[0][1] : "";
     const simpleLink = href === token.content;
@@ -37,7 +37,7 @@ export default function(embeds) {
   }
 
   return function markdownEmbeds(md: MarkdownIt) {
-    md.core.ruler.after("inline", "embeds", state => {
+    md.core.ruler.after("inline", "embeds", (state) => {
       const tokens = state.tokens;
       let insideLink;
 

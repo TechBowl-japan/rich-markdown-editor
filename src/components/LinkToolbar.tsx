@@ -45,7 +45,7 @@ export default class LinkToolbar extends React.Component<Props> {
     window.removeEventListener("mousedown", this.handleClickOutside);
   }
 
-  handleClickOutside = ev => {
+  handleClickOutside = (ev) => {
     if (
       ev.target &&
       this.menuRef.current &&

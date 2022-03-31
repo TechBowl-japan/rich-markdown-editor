@@ -70,7 +70,7 @@ const embeds = [
         height={24}
       />
     ),
-    matcher: url => {
+    matcher: (url) => {
       return url.match(
         /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([a-zA-Z0-9_-]{11})$/i
       );
@@ -89,7 +89,7 @@ export default function Example(props) {
   return (
     <div style={{ padding: "1em 2em" }}>
       <Editor
-        onCreateLink={title => {
+        onCreateLink={(title) => {
           // Delay to simulate time taken for remote API request to complete
           return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -103,25 +103,25 @@ export default function Example(props) {
             }, 1500);
           });
         }}
-        onSearchLink={async term => {
+        onSearchLink={async (term) => {
           console.log("Searched link: ", term);
 
           // Delay to simulate time taken for remote API request to complete
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             setTimeout(() => {
               resolve(
-                docSearchResults.filter(result =>
+                docSearchResults.filter((result) =>
                   result.title.toLowerCase().includes(term.toLowerCase())
                 )
               );
             }, Math.random() * 500);
           });
         }}
-        uploadImage={file => {
+        uploadImage={(file) => {
           console.log("File upload triggered: ", file);
 
           // Delay to simulate time taken to upload
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             setTimeout(() => resolve(URL.createObjectURL(file)), 1500);
           });
         }}

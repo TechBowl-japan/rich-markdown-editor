@@ -17,13 +17,13 @@ export default class TrailingNode extends Extension {
     const plugin = new PluginKey(this.name);
     const disabledNodes = Object.entries(this.editor.schema.nodes)
       .map(([, value]) => value)
-      .filter(node => this.options.notAfter.includes(node.name));
+      .filter((node) => this.options.notAfter.includes(node.name));
 
     return [
       new Plugin({
         key: plugin,
         view: () => ({
-          update: view => {
+          update: (view) => {
             const { state } = view;
             const insertNodeAtEnd = plugin.getState(state);
 
