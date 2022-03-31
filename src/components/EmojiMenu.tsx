@@ -1,5 +1,5 @@
 import React from "react";
-import gemojies from "gemoji";
+import { gemoji as gemojies } from "gemoji";
 import FuzzySearch from "fuzzy-search";
 import CommandMenu, { Props } from "./CommandMenu";
 import EmojiMenuItem from "./EmojiMenuItem";
