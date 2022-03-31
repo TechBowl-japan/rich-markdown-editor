@@ -57,10 +57,7 @@ export default class ExtensionManager {
       );
 
     // FIXME: make up-to-date with prosemirror-markdown
-    return new MarkdownSerializer(
-      nodes,
-      marks
-    ) as unknown as _TMarkdownSerializer;
+    return new MarkdownSerializer(nodes, marks);
   }
 
   parser({
