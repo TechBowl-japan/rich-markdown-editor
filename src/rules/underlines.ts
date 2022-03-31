@@ -1,7 +1,7 @@
 import MarkdownIt from "markdown-it";
 
 export default function markdownUnderlines(md: MarkdownIt) {
-  md.inline.ruler2.after("emphasis", "underline", state => {
+  md.inline.ruler2.after("emphasis", "underline", (state) => {
     const tokens = state.tokens;
 
     for (let i = tokens.length - 1; i > 0; i--) {

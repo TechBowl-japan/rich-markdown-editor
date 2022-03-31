@@ -51,7 +51,7 @@ export default function markdownItCheckbox(md: MarkdownIt): void {
   md.renderer.rules.checkbox_item_close = render;
 
   // insert a new rule after the "inline" rules are parsed
-  md.core.ruler.after("inline", "checkboxes", state => {
+  md.core.ruler.after("inline", "checkboxes", (state) => {
     const tokens = state.tokens;
 
     // work backwards through the tokens and find text that looks like a checkbox

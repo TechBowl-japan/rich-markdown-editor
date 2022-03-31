@@ -1,7 +1,7 @@
 // Adapted from:
 // https://github.com/markdown-it/markdown-it-mark/blob/master/index.js
 
-export default function(options: { delim: string; mark: string }) {
+export default function (options: { delim: string; mark: string }) {
   const delimCharCode = options.delim.charCodeAt(0);
 
   return function emphasisPlugin(md) {
@@ -126,7 +126,7 @@ export default function(options: { delim: string; mark: string }) {
     }
 
     md.inline.ruler.before("emphasis", options.mark, tokenize);
-    md.inline.ruler2.before("emphasis", options.mark, function(state) {
+    md.inline.ruler2.before("emphasis", options.mark, function (state) {
       let curr;
       const tokensMeta = state.tokens_meta,
         max = (state.tokens_meta || []).length;

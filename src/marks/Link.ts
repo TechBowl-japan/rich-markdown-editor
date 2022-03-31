@@ -48,7 +48,7 @@ export default class Link extends Mark {
           }),
         },
       ],
-      toDOM: node => [
+      toDOM: (node) => [
         "a",
         {
           ...node.attrs,
@@ -162,7 +162,7 @@ export default class Link extends Mark {
   parseMarkdown() {
     return {
       mark: "link",
-      getAttrs: tok => ({
+      getAttrs: (tok) => ({
         href: tok.attrGet("href"),
         title: tok.attrGet("title") || null,
       }),

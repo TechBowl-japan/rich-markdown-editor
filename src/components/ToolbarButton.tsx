@@ -40,5 +40,5 @@ export default styled.button<Props>`
     bottom: -4px;
   }
 
-  ${props => props.active && "opacity: 1;"};
+  ${(props) => props.active && "opacity: 1;"};
 `;

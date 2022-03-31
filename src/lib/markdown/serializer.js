@@ -172,7 +172,7 @@ export class MarkdownSerializerState {
       // (FIXME it'd be nice if we had a schema-agnostic way to
       // identify nodes that serialize as hard breaks)
       if (node && node.type.name === "hard_break")
-        marks = marks.filter(m => {
+        marks = marks.filter((m) => {
           if (index + 1 === parent.childCount) return false;
           const next = parent.child(index + 1);
           return (
@@ -187,7 +187,7 @@ export class MarkdownSerializerState {
       if (
         node &&
         node.isText &&
-        marks.some(mark => {
+        marks.some((mark) => {
           const info = this.marks[mark.type.name];
           return info && info.expelEnclosingWhitespace;
         })
@@ -316,7 +316,7 @@ export class MarkdownSerializerState {
       row.forEach((cell, _, j) => {
         this.out += j === 0 ? "| " : " | ";
 
-        cell.forEach(para => {
+        cell.forEach((para) => {
           // just padding the output so that empty cells take up the same space
           // as headings.
           // TODO: Ideally we'd calc the longest cell length and use that

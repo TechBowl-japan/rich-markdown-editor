@@ -34,7 +34,7 @@ export const loadSyntaxHighlight = (
 
   const lang = refractorLangs[language];
   if (lang !== undefined) {
-    const promise = lang().then(l => {
+    const promise = lang().then((l) => {
       refractor.register(l.default);
       delete refractorLangs[language];
       loadedLangs.delete(language);

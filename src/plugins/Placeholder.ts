@@ -18,7 +18,7 @@ export default class Placeholder extends Extension {
     return [
       new Plugin({
         props: {
-          decorations: state => {
+          decorations: (state) => {
             const { doc } = state;
             const decorations: Decoration[] = [];
             const completelyEmpty =

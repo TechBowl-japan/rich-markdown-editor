@@ -57,7 +57,7 @@ export default class ListItem extends Node {
               case "mouseover": {
                 const result = findParentNodeClosestToPos(
                   newState.doc.resolve(action.pos),
-                  node =>
+                  (node) =>
                     node.type.name === this.name ||
                     node.type.name === "checkbox_item"
                 );
@@ -68,7 +68,7 @@ export default class ListItem extends Node {
 
                 const list = findParentNodeClosestToPos(
                   newState.doc.resolve(action.pos),
-                  node => isList(node, this.editor.schema)
+                  (node) => isList(node, this.editor.schema)
                 );
 
                 if (!list) {
@@ -109,7 +109,7 @@ export default class ListItem extends Node {
               case "mouseout": {
                 const result = findParentNodeClosestToPos(
                   newState.doc.resolve(action.pos),
-                  node =>
+                  (node) =>
                     node.type.name === this.name ||
                     node.type.name === "checkbox_item"
                 );
@@ -122,7 +122,7 @@ export default class ListItem extends Node {
                   set.find(
                     result.pos,
                     result.pos + result.node.nodeSize,
-                    spec => spec.hover
+                    (spec) => spec.hover
                   )
                 );
               }

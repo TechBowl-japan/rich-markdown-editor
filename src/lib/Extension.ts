@@ -46,7 +46,7 @@ export default class Extension {
   }
 
   commands(options): Record<string, Command> | Command {
-    return attrs => () => false;
+    return (attrs) => () => false;
   }
 
   get defaultOptions() {

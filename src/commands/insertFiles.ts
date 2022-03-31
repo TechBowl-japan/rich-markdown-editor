@@ -8,7 +8,7 @@ import { NodeSelection } from "prosemirror-state";
 
 let uploadId = 0;
 
-const insertFiles = function(
+const insertFiles = function (
   view: EditorView,
   event: Event,
   pos: number,
@@ -23,7 +23,7 @@ const insertFiles = function(
   }
 ): void {
   // filter to only include image files
-  const images = files.filter(file => /image/i.test(file.type));
+  const images = files.filter((file) => /image/i.test(file.type));
   if (images.length === 0) return;
 
   const {
@@ -75,7 +75,7 @@ const insertFiles = function(
     // to allow all placeholders to be entered at once with the uploads
     // happening in the background in parallel.
     uploadImage(file)
-      .then(src => {
+      .then((src) => {
         // otherwise, insert it at the placeholder's position, and remove
         // the placeholder itself
         const newImg = new Image();
@@ -108,13 +108,13 @@ const insertFiles = function(
           }
         };
 
-        newImg.onerror = error => {
+        newImg.onerror = (error) => {
           throw error;
         };
 
         newImg.src = src;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
 
         // cleanup the placeholder if there is a failure

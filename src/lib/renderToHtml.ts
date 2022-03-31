@@ -25,7 +25,5 @@ export default function renderToHtml(
   markdown: string,
   rulePlugins: PluginSimple[] = defaultRules
 ): string {
-  return createMarkdown({ plugins: rulePlugins })
-    .render(markdown)
-    .trim();
+  return createMarkdown({ plugins: rulePlugins }).render(markdown).trim();
 }
