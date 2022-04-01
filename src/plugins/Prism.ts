@@ -37,7 +37,7 @@ type ParsedNode = {
 const cache: Record<number, { node: Node; decorations: Decoration[] }> = {};
 
 function getDecorations({ doc, name }: { doc: Node; name: string }) {
-  let isImcompleteRender = false;
+  let isIncompleteRender = false;
 
   const decorations: Decoration[] = [];
   const blocks: { node: Node; pos: number }[] = findBlockNodes(doc).filter(
@@ -68,7 +68,7 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
     const language = block.node.attrs.language;
     const isRegistered = refractor.registered(language);
 
-    isImcompleteRender = isImcompleteRender || !isRegistered;
+    isIncompleteRender = isIncompleteRender || !isRegistered;
     if (!language || language === "none" || !isRegistered) {
       const p = loadSyntaxHighlight(language);
       if (p) {
@@ -117,14 +117,14 @@ function getDecorations({ doc, name }: { doc: Node; name: string }) {
 
   return [
     DecorationSet.create(doc, decorations),
-    isImcompleteRender,
+    isIncompleteRender,
     promises,
   ] as const;
 }
 
 export default function Prism({ name }) {
   let highlighted = false;
-  let isImcompleteRender = false;
+  let isIncompleteRender = false;
   let promise = Promise.resolve(undefined as unknown);
   let theView = null as EditorView | null;
 
@@ -143,7 +143,7 @@ export default function Prism({ name }) {
 
         if (
           !highlighted ||
-          isImcompleteRender ||
+          isIncompleteRender ||
           codeBlockChanged ||
           ySyncEdit
         ) {
@@ -152,11 +152,16 @@ export default function Prism({ name }) {
             doc: transaction.doc,
             name,
           });
-          isImcompleteRender = flag;
+          isIncompleteRender = flag;
 
-          if (isImcompleteRender) {
+          if (isIncompleteRender) {
             promise = Promise.all([promise, ...promises]);
             promise.then(() => {
+              if (theView?.isDestroyed) {
+                theView = null;
+                return;
+              }
+
               theView?.dispatch(
                 theView.state.tr.setMeta("prism", { loaded: true })
               );
@@ -172,12 +177,16 @@ export default function Prism({ name }) {
     view: (view) => {
       theView = view;
 
-      if (!highlighted || isImcompleteRender) {
+      if (!highlighted || isIncompleteRender) {
         // we don't highlight code blocks on the first render as part of mounting
         // as it's expensive (relative to the rest of the document). Instead let
         // it render un-highlighted and then trigger a defered render of Prism
         // by updating the plugins metadata
         setTimeout(() => {
+          if (view.isDestroyed) {
+            return;
+          }
+
           view.dispatch(view.state.tr.setMeta("prism", { loaded: true }));
         }, 10);
       }
