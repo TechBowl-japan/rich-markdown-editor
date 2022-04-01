@@ -1,4 +1,4 @@
-import { nameToEmoji } from "gemoji";
+import nameToEmoji from "gemoji/name-to-emoji.json";
 import MarkdownIt from "markdown-it";
 import emojiPlugin from "markdown-it-emoji";
 
