@@ -1,5 +1,5 @@
 import { InputRule } from "prosemirror-inputrules";
-import { nameToEmoji } from "gemoji";
+import nameToEmoji from "gemoji/name-to-emoji.json";
 import Node from "./Node";
 import emojiRule from "../rules/emoji";
 
