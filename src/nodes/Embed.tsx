@@ -1,4 +1,3 @@
-import * as React from "react";
 import Node from "./Node";
 import embedsRule from "../rules/embeds";
 

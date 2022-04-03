@@ -1,7 +1,6 @@
 import { wrappingInputRule } from "prosemirror-inputrules";
 import toggleWrap from "../commands/toggleWrap";
 import { WarningIcon, InfoIcon, StarredIcon } from "outline-icons";
-import * as React from "react";
 import ReactDOM from "react-dom";
 import Node from "./Node";
 import noticesRule from "../rules/notices";

@@ -1,6 +1,5 @@
 import { InputRule } from "prosemirror-inputrules";
 import ReactDOM from "react-dom";
-import * as React from "react";
 import { Plugin } from "prosemirror-state";
 import { isInTable } from "prosemirror-tables";
 import { findParentNode } from "prosemirror-utils";

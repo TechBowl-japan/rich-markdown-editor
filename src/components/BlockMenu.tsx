@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { findParentNode } from "prosemirror-utils";
 import CommandMenu, { Props } from "./CommandMenu";
 import BlockMenuItem from "./BlockMenuItem";
@@ -10,7 +10,7 @@ type BlockMenuProps = Omit<
 > &
   Required<Pick<Props, "onLinkToolbarOpen" | "embeds">>;
 
-class BlockMenu extends React.Component<BlockMenuProps> {
+class BlockMenu extends Component<BlockMenuProps> {
   get items() {
     return getMenuItems(this.props.dictionary);
   }
