@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { usePortalContext } from "../hooks/usePortalContext";
 
