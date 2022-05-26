@@ -1,7 +1,6 @@
 import Editor from "./index";
 import debounce from "lodash/debounce";
 import { Props } from "..";
-import React from "react";
 import { Story, Meta } from "@storybook/react";
 
 export default {

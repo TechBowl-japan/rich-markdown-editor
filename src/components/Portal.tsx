@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { usePortalContext } from "../hooks/usePortalContext";
 
@@ -13,34 +12,27 @@ const domAvailable =
   window.document &&
   window.document.createElement;
 
-export const Portal = ({ children, node }: PortalProps): JSX.Element => {
-  const refDefaultNode = useRef(null as Element | null);
-  const { node: ctxNode } = usePortalContext();
+let globalPortal = null as HTMLDivElement | null;
 
-  useEffect(() => {
-    return () => {
-      if (refDefaultNode.current) {
-        refDefaultNode.current.remove();
-        refDefaultNode.current = null;
-      }
-    };
-  }, []);
+export const Portal = ({ children, node }: PortalProps): JSX.Element => {
+  const { node: ctxNode } = usePortalContext();
 
   if (!domAvailable) {
     return <></>;
   }
 
-  if (!node && !refDefaultNode.current) {
-    refDefaultNode.current = document.createElement("div");
-    document.body.appendChild(refDefaultNode.current);
+  if (!node && !ctxNode && !globalPortal) {
+    globalPortal = document.createElement("div");
+    globalPortal.setAttribute("data-techtrain-portal", "");
+    document.body.appendChild(globalPortal);
   }
 
-  if ((node || ctxNode) && refDefaultNode.current) {
-    refDefaultNode.current.remove();
-    refDefaultNode.current = null;
+  if ((node || ctxNode) && globalPortal) {
+    globalPortal.remove();
+    globalPortal = null;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const containerNode = node ?? ctxNode ?? refDefaultNode.current!;
+  const containerNode = node ?? ctxNode ?? globalPortal!;
   return createPortal(children, containerNode);
 };

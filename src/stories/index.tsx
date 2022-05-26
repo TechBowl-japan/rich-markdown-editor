@@ -1,4 +1,3 @@
-import * as React from "react";
 import { dark, light } from "../styles/theme";
 import Editor from "..";
 
@@ -40,22 +39,22 @@ const docSearchResults = [
   },
 ];
 
-class YoutubeEmbed extends React.Component<{
+const YoutubeEmbed = ({
+  attrs,
+  isSelected,
+}: {
   attrs: any;
   isSelected: boolean;
-}> {
-  render() {
-    const { attrs } = this.props;
-    const videoId = attrs.matches[1];
+}) => {
+  const videoId = attrs.matches[1];
 
-    return (
-      <iframe
-        className={this.props.isSelected ? "ProseMirror-selectednode" : ""}
-        src={`https://www.youtube.com/embed/${videoId}?modestbranding=1`}
-      />
-    );
-  }
-}
+  return (
+    <iframe
+      className={isSelected ? "ProseMirror-selectednode" : ""}
+      src={`https://www.youtube.com/embed/${videoId}?modestbranding=1`}
+    />
+  );
+};
 
 const embeds = [
   {

@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import gemojies from "gemoji";
 import FuzzySearch from "fuzzy-search";
 import CommandMenu, { Props } from "./CommandMenu";
@@ -21,7 +21,7 @@ const searcher = new FuzzySearch<{
   sort: true,
 });
 
-class EmojiMenu extends React.Component<
+class EmojiMenu extends Component<
   Omit<
     Props<Emoji>,
     | "renderMenuItem"

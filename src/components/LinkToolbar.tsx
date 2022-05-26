@@ -4,6 +4,7 @@ import LinkEditor, { SearchResult } from "./LinkEditor";
 import FloatingToolbar from "./FloatingToolbar";
 import createAndInsertLink from "../commands/createAndInsertLink";
 import baseDictionary from "../dictionary";
+import { createRef, useCallback, useEffect } from "react";
 
 type Props = {
   isActive: boolean;
@@ -29,121 +30,134 @@ function isActive(props: Props) {
   }
 }
 
-export default class LinkToolbar extends React.Component<Props> {
-  menuRef = React.createRef<HTMLDivElement>();
+const LinkToolbar = (props: Props) => {
+  const { onClose, onCreateLink, ...rest } = props;
 
-  state = {
-    left: -1000,
-    top: undefined,
-  };
+  const refMenu = createRef<HTMLDivElement>();
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      const { target } = event;
 
-  componentDidMount() {
-    window.addEventListener("mousedown", this.handleClickOutside);
-  }
+      if (
+        event.target &&
+        refMenu.current &&
+        target instanceof Node &&
+        refMenu.current.contains(target)
+      ) {
+        return;
+      }
 
-  componentWillUnmount() {
-    window.removeEventListener("mousedown", this.handleClickOutside);
-  }
+      onClose();
+    },
+    [refMenu, onClose]
+  );
 
-  handleClickOutside = (ev) => {
-    if (
-      ev.target &&
-      this.menuRef.current &&
-      this.menuRef.current.contains(ev.target)
-    ) {
-      return;
-    }
+  const handleOnCreateLink = useCallback(
+    async (title: string) => {
+      const { dictionary, onCreateLink, view, onClose, onShowToast } = props;
 
-    this.props.onClose();
-  };
+      onClose();
+      view.focus();
 
-  handleOnCreateLink = async (title: string) => {
-    const { dictionary, onCreateLink, view, onClose, onShowToast } = this.props;
+      if (!onCreateLink) {
+        return;
+      }
 
-    onClose();
-    this.props.view.focus();
+      const { dispatch, state } = view;
+      const { from, to } = state.selection;
+      if (from !== to) {
+        // selection must be collapsed
+        return;
+      }
 
-    if (!onCreateLink) {
-      return;
-    }
+      const href = `creating#${title}…`;
 
-    const { dispatch, state } = view;
-    const { from, to } = state.selection;
-    if (from !== to) {
-      // selection must be collapsed
-      return;
-    }
+      // Insert a placeholder link
+      dispatch(
+        view.state.tr
+          .insertText(title, from, to)
+          .addMark(
+            from,
+            to + title.length,
+            state.schema.marks.link.create({ href })
+          )
+      );
 
-    const href = `creating#${title}…`;
+      createAndInsertLink(view, title, href, {
+        onCreateLink,
+        onShowToast,
+        dictionary,
+      });
+    },
+    [
+      props.dictionary,
+      props.onCreateLink,
+      props.view,
+      props.onClose,
+      props.onShowToast,
+    ]
+  );
 
-    // Insert a placeholder link
-    dispatch(
-      view.state.tr
-        .insertText(title, from, to)
-        .addMark(
-          from,
-          to + title.length,
-          state.schema.marks.link.create({ href })
-        )
-    );
+  const handleOnSelectLink = useCallback(
+    ({
+      href,
+      title,
+    }: {
+      href: string;
+      title: string;
+      from: number;
+      to: number;
+    }) => {
+      const { view, onClose } = props;
 
-    createAndInsertLink(view, title, href, {
-      onCreateLink,
-      onShowToast,
-      dictionary,
-    });
-  };
+      onClose();
+      view.focus();
 
-  handleOnSelectLink = ({
-    href,
-    title,
-  }: {
-    href: string;
-    title: string;
-    from: number;
-    to: number;
-  }) => {
-    const { view, onClose } = this.props;
+      const { dispatch, state } = view;
+      const { from, to } = state.selection;
+      if (from !== to) {
+        // selection must be collapsed
+        return;
+      }
 
-    onClose();
-    this.props.view.focus();
+      dispatch(
+        view.state.tr
+          .insertText(title, from, to)
+          .addMark(
+            from,
+            to + title.length,
+            state.schema.marks.link.create({ href })
+          )
+      );
+    },
+    [props.view, props.onClose]
+  );
 
-    const { dispatch, state } = view;
-    const { from, to } = state.selection;
-    if (from !== to) {
-      // selection must be collapsed
-      return;
-    }
+  useEffect(() => {
+    window.addEventListener("mousedown", handleClickOutside);
 
-    dispatch(
-      view.state.tr
-        .insertText(title, from, to)
-        .addMark(
-          from,
-          to + title.length,
-          state.schema.marks.link.create({ href })
-        )
-    );
-  };
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
-  render() {
-    const { onCreateLink, onClose, ...rest } = this.props;
-    const { selection } = this.props.view.state;
-    const active = isActive(this.props);
+  const { selection } = rest.view.state;
+  const active = isActive(props);
 
-    return (
-      <FloatingToolbar ref={this.menuRef} active={active} {...rest}>
-        {active && (
-          <LinkEditor
-            from={selection.from}
-            to={selection.to}
-            onCreateLink={onCreateLink ? this.handleOnCreateLink : undefined}
-            onSelectLink={this.handleOnSelectLink}
-            onRemoveLink={onClose}
-            {...rest}
-          />
-        )}
-      </FloatingToolbar>
-    );
-  }
-}
+  return (
+    <FloatingToolbar ref={refMenu} active={active} {...rest}>
+      {active && (
+        <LinkEditor
+          from={selection.from}
+          to={selection.to}
+          onCreateLink={onCreateLink ? handleOnCreateLink : undefined}
+          onSelectLink={handleOnSelectLink}
+          onRemoveLink={onClose}
+          {...rest}
+        />
+      )}
+    </FloatingToolbar>
+  );
+};
+
+export default LinkToolbar;
