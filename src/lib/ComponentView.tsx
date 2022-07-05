@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "styled-components";
-import { EditorView, Decoration } from "prosemirror-view";
+import { EditorView, Decoration, NodeView } from "prosemirror-view";
 import Extension from "../lib/Extension";
 import Node from "../nodes/Node";
 import { light as lightTheme, dark as darkTheme } from "../styles/theme";
@@ -15,16 +15,16 @@ type Component = (options: {
   getPos: () => number;
 }) => React.ReactElement;
 
-export default class ComponentView {
+export default class ComponentView implements NodeView {
   component: Component;
   editor: Editor;
   extension: Extension;
   node: Node;
   view: EditorView;
   getPos: () => number;
-  decorations: Decoration<{ [key: string]: any }>[];
+  decorations: Decoration[];
   isSelected = false;
-  dom: HTMLElement | null;
+  dom: HTMLElement;
   reactRoot: ReactDOM.Root | null;
 
   // See https://prosemirror.net/docs/ref/#view.NodeView
@@ -97,7 +97,9 @@ export default class ComponentView {
       this.reactRoot.unmount();
       this.reactRoot = null;
     }
-    this.dom = null;
+
+    // FIXME: This is a hack to prevent the editor from crashing when a node is removed.
+    this.dom = null as unknown as HTMLElement;
   }
 
   ignoreMutation() {

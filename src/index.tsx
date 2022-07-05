@@ -212,7 +212,13 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   keymaps: Plugin[];
   inputRules: InputRule[];
   nodeViews: {
-    [name: string]: (node, view, getPos, decorations) => ComponentView;
+    [name: string]: (
+      node,
+      view,
+      getPos,
+      decorations,
+      innerDecorations
+    ) => ComponentView;
   };
   nodes: { [name: string]: NodeSpec };
   marks: { [name: string]: MarkSpec };
@@ -513,7 +519,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
 
     return EditorState.create({
       schema: this.schema,
-      doc,
+      doc: doc ?? undefined,
       plugins: [
         ...this.plugins,
         ...this.keymaps,
