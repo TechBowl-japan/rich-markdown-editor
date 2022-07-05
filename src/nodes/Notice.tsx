@@ -1,9 +1,10 @@
+import { DOMOutputSpec, Node as ProseMirrorNode } from "prosemirror-model";
 import { wrappingInputRule } from "prosemirror-inputrules";
 import toggleWrap from "../commands/toggleWrap";
 import { WarningIcon, InfoIcon, StarredIcon } from "outline-icons";
-import ReactDOM from "react-dom/client";
 import Node from "./Node";
 import noticesRule from "../rules/notices";
+import ReactDOM from "react-dom/client";
 
 export default class Notice extends Node {
   get styleOptions() {
@@ -47,7 +48,7 @@ export default class Notice extends Node {
           }),
         },
       ],
-      toDOM: (node) => {
+      toDOM: (node: ProseMirrorNode): DOMOutputSpec => {
         const select = document.createElement("select");
         select.addEventListener("change", this.handleStyleChange);
 
@@ -71,10 +72,16 @@ export default class Notice extends Node {
 
         const icon = document.createElement("div");
         icon.className = "icon";
+        icon.setAttribute("data-icon-type", node.attrs.style);
 
-        // FIXME: possible memory leak
-        const reactRoot = ReactDOM.createRoot(icon);
-        reactRoot.render(component);
+        // HACK: Use Shadow DOM to circumvent the mutation observer on prosemirror
+        // TODO: this should be rendered via NodeView, not NodeSpec
+        icon.attachShadow({ mode: "open" });
+
+        if (icon.shadowRoot) {
+          const reactRoot = ReactDOM.createRoot(icon.shadowRoot);
+          reactRoot.render(component);
+        }
 
         return [
           "div",
