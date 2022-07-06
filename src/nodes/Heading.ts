@@ -8,10 +8,12 @@ import backspaceToParagraph from "../commands/backspaceToParagraph";
 import toggleBlockType from "../commands/toggleBlockType";
 import splitHeading from "../commands/splitHeading";
 import headingToSlug, { headingToPersistenceKey } from "../lib/headingToSlug";
-import Node from "./Node";
+import AppNode from "./Node";
 import { ToastType } from "../types";
 
-export default class Heading extends Node {
+type DOMNode = Node;
+
+export default class Heading extends AppNode {
   className = "heading-name";
 
   get name() {
@@ -42,7 +44,16 @@ export default class Heading extends Node {
       parseDOM: this.options.levels.map((level) => ({
         tag: `h${level}`,
         attrs: { level },
-        contentElement: ".heading-content",
+        contentElement: (node: DOMNode) => {
+          if (node.nodeType !== Node.ELEMENT_NODE) {
+            return node;
+          }
+
+          // FIX(3c1u): if the node is not from rich-markdown-editor (or probably Prosemirror)
+          // views, we need to return the node as is.
+          const dom = node as Element;
+          return dom.getElementsByClassName("heading-content")[0] ?? dom;
+        },
       })),
       toDOM: (node) => {
         const anchor = document.createElement("button");
