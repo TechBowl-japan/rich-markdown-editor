@@ -21,8 +21,8 @@ exports[`renders bullet list 1`] = `
 
 exports[`renders checkbox list 1`] = `
 "<ul>
-<li class=\\"checkbox-list-item\\"><span class=\\"checkbox \\">[ ]</span>unchecked</li>
-<li class=\\"checkbox-list-item\\"><span class=\\"checkbox checked\\">[x]</span>checked</li>
+<li class=\"checkbox-list-item\"><span class=\"checkbox \">[ ]</span>unchecked</li>
+<li class=\"checkbox-list-item\"><span class=\"checkbox checked\">[x]</span>checked</li>
 </ul>"
 `;
 
@@ -32,7 +32,7 @@ exports[`renders code block 1`] = `
 `;
 
 exports[`renders code fence 1`] = `
-"<pre><code class=\\"language-javascript\\">this is code
+"<pre><code class=\"language-javascript\">this is code
 </code></pre>"
 `;
 
@@ -45,16 +45,16 @@ exports[`renders headings 1`] = `
 <h4>Heading 4</h4>"
 `;
 
-exports[`renders highlight marks 1`] = `"<p>this is <span class=\\"highlight\\">highlighted</span> text</p>"`;
+exports[`renders highlight marks 1`] = `"<p>this is <span class=\"highlight\">highlighted</span> text</p>"`;
 
 exports[`renders horizontal rule 1`] = `"<hr>"`;
 
-exports[`renders image 1`] = `"<p><img src=\\"https://lorempixel.com/200/200\\" alt=\\"caption\\"></p>"`;
+exports[`renders image 1`] = `"<p><img src=\"https://lorempixel.com/200/200\" alt=\"caption\"></p>"`;
 
-exports[`renders image with alignment 1`] = `"<p><img src=\\"https://lorempixel.com/200/200\\" alt=\\"caption\\" title=\\"left-40\\"></p>"`;
+exports[`renders image with alignment 1`] = `"<p><img src=\"https://lorempixel.com/200/200\" alt=\"caption\" title=\"left-40\"></p>"`;
 
 exports[`renders info notice 1`] = `
-"<div class=\\"notice notice-info\\">
+"<div class=\"notice notice-info\">
 <p>content of notice</p>
 </div>"
 `;
@@ -63,7 +63,7 @@ exports[`renders italic marks 1`] = `"<p>this is <em>italic</em> text</p>"`;
 
 exports[`renders italic marks 2`] = `"<p>this is <em>also italic</em> text</p>"`;
 
-exports[`renders link marks 1`] = `"<p>this is <a href=\\"https://www.example.com\\">linked</a> text</p>"`;
+exports[`renders link marks 1`] = `"<p>this is <a href=\"https://www.example.com\">linked</a> text</p>"`;
 
 exports[`renders ordered list 1`] = `
 "<ol>
@@ -86,34 +86,34 @@ exports[`renders table 1`] = `
 <tr>
 <th>
 <p>heading</p></th>
-<th style=\\"text-align:center\\">
+<th style=\"text-align:center\">
 <p>centered</p></th>
-<th style=\\"text-align:right\\">
+<th style=\"text-align:right\">
 <p>right aligned</p></th>
 </tr>
 <tr>
 <td>
 <p></p></td>
-<td style=\\"text-align:center\\">
+<td style=\"text-align:center\">
 <p>center</p></td>
-<td style=\\"text-align:right\\">
+<td style=\"text-align:right\">
 <p></p></td>
 </tr>
 <tr>
 <td>
 <p></p></td>
-<td style=\\"text-align:center\\">
+<td style=\"text-align:center\">
 <p></p></td>
-<td style=\\"text-align:right\\">
+<td style=\"text-align:right\">
 <p>bottom r</p></td>
 </tr>
 </table>"
 `;
 
-exports[`renders template placeholder marks 1`] = `"<p>this is <span class=\\"placeholder\\">a placeholder</span></p>"`;
+exports[`renders template placeholder marks 1`] = `"<p>this is <span class=\"placeholder\">a placeholder</span></p>"`;
 
 exports[`renders tip notice 1`] = `
-"<div class=\\"notice notice-tip\\">
+"<div class=\"notice notice-tip\">
 <p>content of notice</p>
 </div>"
 `;
@@ -123,7 +123,7 @@ exports[`renders underline marks 1`] = `"<p>this is <underline>underlined</under
 exports[`renders underline marks 2`] = `"<p>this is <s>strikethrough</s> text</p>"`;
 
 exports[`renders warning notice 1`] = `
-"<div class=\\"notice notice-warning\\">
+"<div class=\"notice notice-warning\">
 <p>content of notice</p>
 </div>"
 `;
