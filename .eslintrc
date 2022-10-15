@@ -9,9 +9,13 @@
     "plugin:prettier/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "plugin:compat/recommended"
   ],
-  "plugins": ["react", "react-hooks", "jsx-a11y"],
+  "env": {
+    "browser": true
+  },
+  "plugins": ["react", "react-hooks", "jsx-a11y", "compat"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "version": 2021,
