@@ -1,4 +1,3 @@
-import ResizeObserver from "resize-observer-polyfill";
 import { useState, useEffect } from "react";
 
 export default function useComponentSize(ref): {
