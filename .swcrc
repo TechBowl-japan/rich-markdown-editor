@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "module": {
+    "type": "commonjs"
+  },
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "dynamicImport": false,
+      "decorators": false
+    },
+    "target": "es2015",
+    "loose": false,
+    "externalHelpers": false,
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
+    }
+  },
+  "minify": true
+}
