@@ -7,3 +7,4 @@ example
 .eslintrc
 .map
 dist/stories
+storybook-static/
